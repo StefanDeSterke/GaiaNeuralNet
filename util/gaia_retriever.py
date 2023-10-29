@@ -9,16 +9,24 @@ def sync_retrieve_astrophysical_parameters(query: str) -> pd.DataFrame:
     return job.get_results().to_pandas()
 
 
-def async_retrieve_astrophysical_parameters(query: str) -> pd.DataFrame:
-    job = Gaia.launch_job_async(query, background=True)
-
+def async_retrieve_astrophysical_parameters(query: str, file_dump: bool, file: str = None) -> pd.DataFrame:
+    job = Gaia.launch_job_async(query, background=True, dump_to_file=file_dump, output_file=file)
     print(job)
 
-    while job.get_phase(update=True) != 'COMPLETED':
+    while True:
+        phase = job.get_phase(update=True)
+
+        if phase == 'COMPLETED':
+            break
+        elif phase == 'ERROR':
+            raise Exception(f"Something went wrong trying to retrieve the astrophysical parameters:\n{job.get_error()}")
+
         print("Job still processing..")
         time.sleep(5)
 
     print("Job complete!")
+
+    job.save_results(verbose=True)
 
     return job.get_results().to_pandas()
 
