@@ -8,8 +8,8 @@ script_location = Path(__file__).absolute().parent
 Gaia.ROW_LIMIT = -1
 Gaia.login(user=config.user, password=config.password)
 
-QUERY = open(script_location / "sql/mass_lum_teff.sql").read()
+QUERY = open(script_location / "sql/dist.sql").read()
 
-parameters = retrieve_parameters(QUERY, file_dump=True, file=str(script_location / "tables/mass_lum_teff.vot.gz"))
+parameters = retrieve_parameters(QUERY, file_dump=True, file=str(script_location / "tables/dist.vot.gz"))
 
 print(parameters)
