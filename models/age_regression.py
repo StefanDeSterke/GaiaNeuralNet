@@ -7,20 +7,13 @@ from astropy.io.votable import parse_single_table
 
 script_location = Path(__file__).absolute().parent
 
-parameters_path = str(script_location / "../tables/dist.vot")
+parameters_path = str(script_location / "../tables/age.vot")
 
 parameters = parse_single_table(parameters_path).to_table().to_pandas()
 
-parameters.insert(column="parallax", value=parameters.pop("__").map(lambda x: 1 / x), loc=3)
-
 print(parameters)
 
-# parameters.pop("phot_g_mean_mag")
-# parameters.pop("bc_flame")
-# parameters.pop("lum_flame")
-parameters.pop("parallax")
-
-target = parameters.pop("distance_gspphot").map(lambda x: math.log10(x))
+target = parameters.pop("age_flame")
 
 train_frac = 0.7
 train_size = int(len(parameters) * 0.7)
@@ -46,7 +39,7 @@ print(target_train.get_shape())
 
 model = tf.keras.models.Sequential([
     tf.keras.layers.Normalization(),
-    tf.keras.layers.Dense(32, activation='tanh'),
+    tf.keras.layers.Dense(32, activation='relu'),
     tf.keras.layers.Dense(1)
 ])
 
@@ -62,7 +55,7 @@ model.evaluate(parameters_test, target_test, verbose=2)
 
 history_df = pd.DataFrame(history.history)["loss"]
 
-csv_path = str(script_location / "../models/results/distance_regression_1.csv")
+csv_path = str(script_location / "../models/results/age_regression_1.csv")
 
 with open(csv_path, 'w') as f:  # You will need 'wb' mode in Python 2.x
     history_df.to_csv(f)
