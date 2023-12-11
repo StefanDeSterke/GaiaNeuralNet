@@ -46,8 +46,7 @@ parameters = tf.convert_to_tensor(parameters, dtype=tf.float32)
 target = tf.convert_to_tensor(target, dtype=tf.int8)
 
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dense(1, activation='relu'),
     tf.keras.layers.Dense(8)
 ])
 
