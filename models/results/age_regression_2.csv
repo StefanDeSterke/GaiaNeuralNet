@@ -1,0 +1,22 @@
+epoch;loss
+0;0.007883605
+1;0.007424396
+2;0.007496938
+3;0.007371827
+4;0.00731077
+5;0.007258213
+6;0.005301782
+7;0.004063266
+8;0.004131914
+9;0.004083299
+;
+;
+Hyperparameter;Waarde
+Learning rate;0.001
+Batch size;32
+Epochs;10
+Grootte netwerk;32,32,1 (tanh)
+;
+;
+Loss validatieset;0.0038
+Loss testset;0.0038
