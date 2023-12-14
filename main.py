@@ -10,13 +10,16 @@ parameters = parse_single_table(parameters_path).to_table().to_pandas()
 
 print(parameters)
 
+# Definieer de verschillende labels.
 labels = ["CSTAR", "M", "K", "G", "F", "A", "B", "O"]
 
 
+# Zet een label om naar zijn id.
 def label_to_identifier(label: str) -> int:
     return labels.index(label)
 
 
+# Zet een temperatuur om in zijn bijbehorende label.
 def temp_to_spectraltype(temp: float) -> str:
     if temp < 2400:
         return labels[0]

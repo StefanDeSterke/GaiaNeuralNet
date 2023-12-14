@@ -2,13 +2,17 @@ from astroquery.gaia import Gaia
 import pandas as pd
 import time
 
-
+# Verkrijg de astrofysische parameters aan de hand van een synchrone request.
+# Deze functie wordt niet aangeraden aangezien de time-out aanzienlijk korter is
+# en je dus minder grote requests kan maken.
 def sync_retrieve_astrophysical_parameters(query: str) -> pd.DataFrame:
     job = Gaia.launch_job(query)
 
     return job.get_results().to_pandas()
 
 
+# Verkrijg de astrofysische parameters aan de hand van een asynchrone request.
+# Hiermee kun je veel grotere requests maken dan bij een synchrone request.
 def async_retrieve_astrophysical_parameters(query: str, file_dump: bool, file: str = None) -> pd.DataFrame:
     job = Gaia.launch_job_async(query, background=True, dump_to_file=file_dump, output_file=file)
     print(job)
