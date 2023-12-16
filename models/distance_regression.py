@@ -12,11 +12,10 @@ parameters_path = str(script_location / "../tables/dist.vot")
 # Laad de parameters in als een pandas Dataframe.
 parameters = parse_single_table(parameters_path).to_table().to_pandas()
 
-parameters.insert(column="parallax", value=parameters.pop("__").map(lambda x: 1 / x), loc=3)
-
 # Print de huidige parameters om te kijken of het klopt.
 print(parameters)
 
+# De parallax parameter gebruiken we niet in dit netwerk.
 parameters.pop("parallax")
 
 # Hier wordt de te voorspellen afstand gescheiden van de andere parameters.
@@ -83,26 +82,3 @@ with open(csv_path, 'w') as f:
 model.save(str(script_location / "results/distance_regression_3.keras"), save_format="keras")
 
 model.evaluate(parameters_test, target_test, verbose=2)
-
-'''
-sumSquaredError = 0
-
-for i in range(0, len(parameters_test)):
-    params_datapoint = parameters_test[i]
-    target_datapoint = target_test[i]
-
-    params_predict = model.predict(params_datapoint, verbose=0)
-
-    error = math.pow(10, params_predict[0][0]) - math.pow(10, tf.get_static_value(target_datapoint))
-
-    error /= math.pow(10, tf.get_static_value(target_datapoint))
-
-    sumSquaredError += error * error
-
-    print(f"Predicted: {math.pow(10, params_predict[0][0])}")
-    print(f"Real: {math.pow(10, tf.get_static_value(target_datapoint))}")
-    print(error)
-    print(sumSquaredError / (i + 1))
-
-print(sumSquaredError / len(parameters_test))
-'''
